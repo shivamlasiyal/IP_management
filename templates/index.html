@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IP Record Management</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>IP Record Management</h1>
+	<h4><a href="ip_records">Show Data</a></h4>
+    <form action="/" method="POST" onsubmit="return validateForm()">
+        Machine Name: <input type="text" name="machine_name" required pattern="^[a-zA-Z0-9-_]+$" title="No special characters allowed (except - and _)"><br>
+        IP Address: <input type="text" name="ip_address" required pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" title="Enter a valid IPv4 address"><br>
+        <input type="submit" name="add" value="Add Record">
+        <div id="error-msg" style="color: red;"></div>
+    </form>
+    <h2>Records</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Machine Name</th>
+            <th>IP Address</th>
+            <th>Actions</th>
+        </tr>
+        {% for record in ip_records %}
+        <tr>
+            <form action="/" method="POST">
+                <td>{{ record.id }}<input type="hidden" name="id" value="{{ record.id }}"></td>
+                <td><input type="text" name="machine_name" value="{{ record.machine_name }}" required pattern="^[a-zA-Z0-9-_]+$" title="No special characters allowed (except - and _)"></td>
+                <td><input type="text" name="ip_address" value="{{ record.ip_address }}" required pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" title="Enter a valid IPv4 address"></td>
+                <td>
+                    <input type="submit" name="update" value="Update">
+                    <button type="submit" name="delete" value="{{ record.id }}">Delete</button>
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        function validateForm() {
+            var machineNameInput = document.getElementsByName('machine_name')[0];
+            var errorDiv = document.getElementById('error-msg');
+            var pattern = /^[a-zA-Z0-9-_]+$/;
+
+            if (!pattern.test(machineNameInput.value)) {
+                errorDiv.textContent = 'Invalid characters in machine name field. Special characters are not allowed except "-" and "_".';
+                return false;
+            } else {
+                errorDiv.textContent = '';
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>

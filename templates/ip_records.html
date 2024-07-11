@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IP Records</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>IP Records</h1>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Machine Name</th>
+                <th>IP Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in ip_records %}
+            <tr>
+                <td>{{ record.id }}</td>
+                <td>{{ record.machine_name }}</td>
+                <td>{{ record.ip_address }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Add link to download Excel -->
+    <a href="{{ url_for('export_records') }}">Download IP Records (Excel)</a>
+
+</body>
+</html>
